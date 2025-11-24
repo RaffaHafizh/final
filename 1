@@ -1,0 +1,161 @@
+/******************************************************************************
+*final Project
+* Mata Kuliah Pengenalan Pemrograman
+* Nama Project      :
+* Nama Mahasiswa    : Raffa Hafizh Hauzaan
+* NPM               : 2510631170004
+* Kelas             : 1A Informatika
+
+*******************************************************************************/
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MAKS_BELANJA = 100;
+
+string namaBarang[MAKS_BELANJA];
+int jumlah[MAKS_BELANJA];
+int jumlahTransaksi;
+int harga[MAKS_BELANJA];
+int subtotal[MAKS_BELANJA];
+int transaksi= 0;
+
+void bersihkanlayar();
+void tampilkanmenu();
+void daftarbarang();
+void inputtransaksi();
+void tampilkanringkasan();
+int hitungtotal();
+void resetdata();
+
+void bersihkanlayar() {
+	for (int i = 0; i < 30; i++) {
+		cout << endl;
+	}
+}
+
+void tampilkanmenu() {
+	cout << "====================================" << endl;
+	cout << "   PROGRAM TOKO SEPEDA KING RAPA    " << endl;
+	cout << "====================================" << endl;
+	cout << "1. Daftar Barang" << endl;
+	cout << "2. Input Transaksi Barang" << endl;
+	cout << "3. Tampilkan Ringkasan Transaksi" << endl;
+	cout << "4. Keluar" << endl;
+	cout << "5. Reset data transaksi" << endl;
+	cout << "====================================" << endl;
+}
+
+void daftarbarang() {
+	cout << "\n===DAFTAR BARANG===" << endl;
+	cout << endl;
+	cout << "1. Velg " << "Rp.1000000" << endl;
+	cout << "2. Ban Luar/Dalam " << "Rp.250000" << endl;
+	cout << "3. Rantai" << "Rp.90000" << endl;
+	cout << "4. Kerangka" << "Rp.2800000" << endl;
+}
+
+void inputtransaksi() {
+	char lagi = 'y';
+
+	while (lagi == 'y' || lagi == 'Y') {
+		if (jumlahTransaksi >= MAKS_BELANJA) {
+			cout << "Data transaksi sudah mencapai batas maksimum." << endl;
+			break;
+		}
+
+		cout << "\nNama Barang          : ";
+		cin >> namaBarang[jumlahTransaksi];
+
+		cout << "Jumlah             : ";
+		cin >> jumlah[jumlahTransaksi];
+
+		cout << "Harga per pcs     : ";
+		cin >> harga[jumlahTransaksi];
+
+		subtotal[jumlahTransaksi] = jumlah[jumlahTransaksi] * harga[jumlahTransaksi];
+		jumlahTransaksi++;
+
+		cout << "Input barang lain? (y/n): ";
+		cin >> lagi;
+	}
+}
+
+void tampilkanringkasan() {
+	if (jumlahTransaksi == 0) {
+		cout << "Belum ada transaksi yang tercatat." << endl;
+		return;
+	}
+
+	cout << "\n=========== RINGKASAN TRANSAKSI ===========" << endl;
+	for (int i = 0; i < jumlahTransaksi; i++) {
+		cout << i + 1 << ". " << namaBarang[i]
+		     << " x" << jumlah[i]
+		     << " @ " << harga[i]
+		     << " = " << subtotal[i] << endl;
+	}
+
+	int total = hitungtotal();
+	cout << "-------------------------------------------" << endl;
+	cout << "Total yang harus dibayar: Rp " << total << endl;
+	cout << "===========================================" << endl;
+}
+
+int hitungtotal() {
+	int total = 0;
+	for (int i = 0; i < jumlahTransaksi; i++) {
+		total += subtotal[i];
+	}
+	return total;
+}
+
+void resetdata() {
+	for (int i = 0; i < MAKS_BELANJA; i++) {
+		namaBarang[i] = "";
+		jumlah[i] = 0;
+		harga[i] = 0;
+		subtotal[i] = 0;
+	}
+	jumlahTransaksi = 0;
+}
+
+int main() {
+	int pilihan;
+	bool selesai = false;
+
+	while (!selesai) {
+		bersihkanlayar();
+		tampilkanmenu();
+		cout << "Pilih menu: ";
+		cin >> pilihan;
+
+		switch (pilihan) {
+		case 1:
+			daftarbarang();
+			break;
+		case 2:
+			inputtransaksi();
+			break;
+		case 3:
+			tampilkanringkasan();
+			break;
+		case 4:
+			cout << "Terima kasih telah menggunakan program Toko Sepeda Kami." << endl;
+			selesai = true;
+			break;
+		case 5:
+			resetdata();
+			break;
+		default:
+			cout << "Pilihan tidak valid." << endl;
+		}
+
+		if (!selesai) {
+			cout << "\nTekan ENTER untuk kembali ke menu...";
+			cin.ignore();
+			cin.get();
+		}
+	}
+
+	return 0;
+}
